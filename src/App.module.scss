@@ -1,0 +1,11 @@
+@import './theme/theme.scss';
+
+.wrapper {
+	height: 100vh;
+	width: 100vw;
+	background: $grey;
+	color: $white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
