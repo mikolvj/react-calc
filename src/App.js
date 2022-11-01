@@ -1,7 +1,6 @@
 import classes from './App.module.scss';
-import { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 
-const initResult = 0;
 const buttons = [
 	'C',
 	'^',
@@ -25,49 +24,16 @@ const buttons = [
 ];
 
 const App = () => {
-	const [value, setValue] = useState('');
-
-	const handleClear = () => {
-		setValue('');
-	};
-
-	const handleEquals = () => {
-		console.log('equals');
-	};
-	const handleSign = (e) => {
-		console.log(e.target.innerHTML);
-	};
-	const handleNum = (e) => {
-		console.log(e.target.innerHTML);
-		console.log(value);
-		if (value.length < 9) {
-			if (e.target.innerHTML === '.' && value === '') setValue('0.');
-			else if (e.target.innerHTML === '.' && value.includes('.')) return;
-			else setValue(value + e.target.innerHTML);
-		} else return;
-	};
 	return (
 		<div className={classes.wrapper}>
-			<div className={classes.display}>{value ? value : initResult}</div>
+			<div className={classes.display}>
+				<div className={classes.previousNumber}>123</div>
+				<div className={classes.sign}>+</div>
+				<div className={classes.currentNumber}>456</div>
+			</div>
 			<div className={classes.buttons}>
 				{buttons.map((btn, i) => (
-					<div
-						key={i}
-						className={btn === '=' ? classes.equals : null}
-						value={btn}
-						onClick={
-							btn === '='
-								? handleEquals
-								: btn === '+' ||
-								  btn === '-' ||
-								  (btn === '/') | (btn === '*') ||
-								  btn === '^'
-								? handleSign
-								: btn === 'C'
-								? handleClear
-								: handleNum
-						}
-					>
+					<div key={i} className={btn === '=' ? classes.equals : null}>
 						{btn}
 					</div>
 				))}
