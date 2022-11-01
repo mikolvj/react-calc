@@ -25,7 +25,7 @@ const buttons = [
 
 const ACTIONS = {
 	ADD_DIGIT: 'adding-digit',
-	SET_SIGN: 'setting-operation-sigh',
+	SET_SIGN: 'setting-operation-sign',
 	CLEAR: 'clearing-screen',
 	EVALUATE: 'evaluate',
 };
@@ -36,12 +36,13 @@ const reducer = (state, { type, payload }) => {
 			if (state.overwrite)
 				return { ...state, currNum: payload, overwrite: false };
 
-			if (payload === '00' && state.currNum === '')
+			if (payload === '00' && state.currNum == null)
 				return { ...state, currNum: '0' };
 			if (payload === '0' && state.currNum === '0') return state;
 			if (payload === '00' && state.currNum === '0') return state;
-			if (payload === '.' && state.currNum.includes('.')) return state;
-			if (payload === '.' && state.currNum === '')
+			if (payload === '.' && state.currNum && state.currNum.includes('.'))
+				return state;
+			if (payload === '.' && state.currNum == null)
 				return { ...state, currNum: '0.' };
 
 			return {
@@ -91,7 +92,7 @@ const evaluate = ({ prevNum, currNum, sign }) => {
 	const prev = parseFloat(prevNum);
 	const curr = parseFloat(currNum);
 	if (isNaN(prev) || isNaN(curr)) return '';
-	let result = '';
+	let result = null;
 	switch (sign) {
 		case '+':
 			result = prev + curr;
@@ -115,7 +116,7 @@ const evaluate = ({ prevNum, currNum, sign }) => {
 
 const App = () => {
 	const [{ prevNum, currNum, sign }, dispatch] = useReducer(reducer, {});
-	const [keyError, setKeyError] = useState('');
+	const [keyError, setKeyError] = useState('Try to use the keyboard.');
 
 	useEffect(() => {
 		window.addEventListener('keydown', keyboardEvents);
