@@ -121,25 +121,6 @@ const App = () => {
 		window.addEventListener('keydown', keyboardEvents);
 	}, []);
 
-	// const enterKeyHandler = (e) => {
-	// 	e.preventDefault();
-	// 	dispatch({ type: ACTIONS.EVALUATE });
-	// };
-
-	// const clearHandler = (e) => {
-	// 	dispatch({ type: ACTIONS.CLEAR });
-	// 	setKeyError('');
-	// };
-
-	// const setSignHandler = (e) => {
-	// 	dispatch({ type: ACTIONS.SET_SIGN, payload: e.key });
-	// 	setKeyError('');
-	// };
-	// const addDigitHandler = (e) => {
-	// 	dispatch({ type: ACTIONS.ADD_DIGIT, payload: e.key });
-	// 	setKeyError('');
-	// };
-
 	const inputHandler = (e, type, payload) => {
 		e.preventDefault();
 		let key = payload || e.key;
@@ -148,29 +129,16 @@ const App = () => {
 	};
 
 	const keyboardEvents = (e) => {
-		console.log(e.key);
 		e.key === '=' || e.key === 'Enter'
-			? enterKeyHandler(e)
+			? inputHandler(e, ACTIONS.EVALUATE)
 			: e.key === 'C' || e.key === 'c'
-			? clearHandler(e)
-			: e.key === '+' ||
-			  e.key === '-' ||
-			  e.key === '/' ||
-			  e.key === '*' ||
-			  e.key === '^'
-			? setSignHandler(e)
-			: e.key === '0' ||
-			  e.key === '1' ||
-			  e.key === '2' ||
-			  e.key === '3' ||
-			  e.key === '4' ||
-			  e.key === '5' ||
-			  e.key === '6' ||
-			  e.key === '7' ||
-			  e.key === '8' ||
-			  e.key === '9' ||
-			  e.key === '.'
-			? addDigitHandler(e)
+			? inputHandler(e, ACTIONS.CLEAR)
+			: ['+', '-', '/', '*', '^'].includes(e.key)
+			? inputHandler(e, ACTIONS.SET_SIGN)
+			: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'].includes(e.key)
+			? inputHandler(e, ACTIONS.ADD_DIGIT)
+			: e.key === 'Shift'
+			? setKeyError('')
 			: setKeyError('This key is not allowed.');
 	};
 
@@ -191,11 +159,7 @@ const App = () => {
 								? () => dispatch({ type: ACTIONS.EVALUATE })
 								: btn === 'C'
 								? () => dispatch({ type: ACTIONS.CLEAR })
-								: btn === '+' ||
-								  btn === '-' ||
-								  btn === '/' ||
-								  btn === '*' ||
-								  btn === '^'
+								: ['+', '-', '/', '*', '^'].includes(btn)
 								? () => dispatch({ type: ACTIONS.SET_SIGN, payload: btn })
 								: () => dispatch({ type: ACTIONS.ADD_DIGIT, payload: btn })
 						}
