@@ -1,5 +1,5 @@
 import classes from './App.module.scss';
-import React, { useState, useReducer } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 
 const buttons = [
 	'C',
@@ -100,7 +100,7 @@ const evaluate = ({ prevNum, currNum, sign }) => {
 			result = prev - curr;
 			break;
 		case '/':
-			if (curr == 0) result = 'ERR';
+			if (curr === 0) result = 'ERR';
 			else result = prev / curr;
 			break;
 		case '*':
@@ -115,6 +115,64 @@ const evaluate = ({ prevNum, currNum, sign }) => {
 
 const App = () => {
 	const [{ prevNum, currNum, sign }, dispatch] = useReducer(reducer, {});
+	const [keyError, setKeyError] = useState('');
+
+	useEffect(() => {
+		window.addEventListener('keydown', keyboardEvents);
+	}, []);
+
+	// const enterKeyHandler = (e) => {
+	// 	e.preventDefault();
+	// 	dispatch({ type: ACTIONS.EVALUATE });
+	// };
+
+	// const clearHandler = (e) => {
+	// 	dispatch({ type: ACTIONS.CLEAR });
+	// 	setKeyError('');
+	// };
+
+	// const setSignHandler = (e) => {
+	// 	dispatch({ type: ACTIONS.SET_SIGN, payload: e.key });
+	// 	setKeyError('');
+	// };
+	// const addDigitHandler = (e) => {
+	// 	dispatch({ type: ACTIONS.ADD_DIGIT, payload: e.key });
+	// 	setKeyError('');
+	// };
+
+	const inputHandler = (e, type, payload) => {
+		e.preventDefault();
+		let key = payload || e.key;
+		dispatch({ type: type, payload: key });
+		setKeyError('');
+	};
+
+	const keyboardEvents = (e) => {
+		console.log(e.key);
+		e.key === '=' || e.key === 'Enter'
+			? enterKeyHandler(e)
+			: e.key === 'C' || e.key === 'c'
+			? clearHandler(e)
+			: e.key === '+' ||
+			  e.key === '-' ||
+			  e.key === '/' ||
+			  e.key === '*' ||
+			  e.key === '^'
+			? setSignHandler(e)
+			: e.key === '0' ||
+			  e.key === '1' ||
+			  e.key === '2' ||
+			  e.key === '3' ||
+			  e.key === '4' ||
+			  e.key === '5' ||
+			  e.key === '6' ||
+			  e.key === '7' ||
+			  e.key === '8' ||
+			  e.key === '9' ||
+			  e.key === '.'
+			? addDigitHandler(e)
+			: setKeyError('This key is not allowed.');
+	};
 
 	return (
 		<div className={classes.wrapper}>
@@ -146,6 +204,7 @@ const App = () => {
 					</button>
 				))}
 			</div>
+			<p className={classes.error}>{keyError}</p>
 		</div>
 	);
 };
