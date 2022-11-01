@@ -9,18 +9,24 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-
-	font-size: 1.2em;
 }
 
 .display {
 	display: flex;
+	flex-direction: column;
 	align-items: flex-end;
-	justify-content: end;
+	justify-content: space-around;
 	width: 200px;
-	height: 60px;
+	min-height: 80px;
 	padding: 0.5em;
 	border: solid 1px $white;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+
+.previousNumber,
+.sign {
+	font-size: 0.6em;
 }
 
 .buttons {
@@ -32,11 +38,16 @@
 	grid-template-rows: repeat(5, auto);
 }
 
-.buttons div {
+button {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	outline: none;
+	border: none;
+	background: none;
+	color: $white;
 
+	font-size: 1em;
 	transition: all 0.3s;
 
 	&:hover {
@@ -48,7 +59,7 @@
 .equals {
 	grid-column: 4/5;
 	grid-row: 4/6;
-	background-color: rgba(255, 255, 255, 0.2);
+	// background-color: rgba(255, 255, 255, 0.2);
 }
 
 @media screen and (max-width: 500px) {
