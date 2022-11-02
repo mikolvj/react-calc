@@ -145,6 +145,7 @@ const App = () => {
 
 	return (
 		<div className={classes.wrapper}>
+			<div className={classes.calcBody}>
 			<div className={classes.display}>
 				<div className={classes.previousNumber}>{prevNum}</div>
 				<div className={classes.sign}>{sign}</div>
@@ -168,6 +169,7 @@ const App = () => {
 						{btn}
 					</button>
 				))}
+			</div>
 			</div>
 			<p className={classes.error}>{keyError}</p>
 		</div>
